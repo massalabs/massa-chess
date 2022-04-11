@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './App.css';
-import { INodeStatus, IAccount, IProvider, ProviderType, Client, IClientConfig } from "massa-web3";
+import { IAccount, IProvider, ProviderType, Client, IClientConfig, ICallData } from "massa-web3";
 import { Chess } from "chess.js";
 import { Chessboard } from "react-chessboard";
 
@@ -10,8 +10,6 @@ const baseAccount = {
   privateKey: "2SPTTLK6Vgk5zmZEkokqC3wgpKgKpyV5Pu3uncEGawoGyd4yzC",
   address: "9mvJfA4761u1qT8QwSWcJ4gTDaFP5iSgjQzKMaqTbrWCFo1QM"
 } as IAccount;
-
-type TNodeStatus = INodeStatus | null;
 
 const providers: Array<IProvider> = [
   {
@@ -34,7 +32,17 @@ const web3Client: Client = new Client(web3ClientConfig, baseAccount);
 // END
 
 // START
-function PlayRandomMoveEngine() {
+function ChessEngine() {
+  const boardState = web3Client.smartContracts().callSmartContract({
+    fee: 0,
+    maxGas: 1_000_000,
+    gasPrice: 0,
+    parallelCoins: 0,
+    sequentialCoins: 0,
+    targetAddress: "ADDRESS",
+    functionName: "get_board_state",
+    parameter: "",
+  } as ICallData, baseAccount);
   const [game, setGame] = useState(new Chess());
 
   function safeGameMutate(modify: any) {
@@ -65,10 +73,20 @@ function PlayRandomMoveEngine() {
         promotion: "q",
       });
     });
-     // illegal move
+    // illegal move
     if (move === null)
       return false;
     setTimeout(makeRandomMove, 200);
+    web3Client.smartContracts().callSmartContract({
+      fee: 0,
+      maxGas: 1_000_000,
+      gasPrice: 0,
+      parallelCoins: 0,
+      sequentialCoins: 0,
+      targetAddress: "ADDRESS",
+      functionName: "set_board_state",
+      parameter: game.fen(),
+    } as ICallData, baseAccount);
     return true;
   }
 
@@ -80,7 +98,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        {PlayRandomMoveEngine()}
+        {ChessEngine()}
       </header>
     </div>
   );
