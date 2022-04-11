@@ -42,6 +42,7 @@
     "querystring-es3": "^0.2.1",
     "react": "^18.0.0",
     "react-app-rewired": "^2.2.1",
+    "react-chessboard": "^1.2.2",
     "react-dom": "^18.0.0",
     "react-scripts": "5.0.0",
     "stream": "^0.0.2",

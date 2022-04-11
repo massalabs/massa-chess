@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './App.css';
-import massa from './massa_logo.png'
 import { INodeStatus, IAccount, IProvider, ProviderType, Client, IClientConfig } from "massa-web3";
 import { Chess } from "chess.js";
+import { Chessboard } from "react-chessboard";
 
 // START
 const baseAccount = {
@@ -34,56 +34,53 @@ const web3Client: Client = new Client(web3ClientConfig, baseAccount);
 // END
 
 // START
-const chess = new Chess()
+function PlayRandomMoveEngine() {
+  const [game, setGame] = useState(new Chess());
 
-while (!chess.game_over()) {
-    const moves = chess.moves()
-    const move = moves[Math.floor(Math.random() * moves.length)]
-    chess.move(move)
+  function safeGameMutate(modify: any) {
+    setGame((g: any) => {
+      const update = { ...g };
+      modify(update);
+      return update;
+    });
+  }
+
+  function makeRandomMove() {
+    const possibleMoves = game.moves();
+    // exit if the game is over
+    if (game.game_over() || game.in_draw() || possibleMoves.length === 0)
+      return;
+    const randomIndex = Math.floor(Math.random() * possibleMoves.length);
+    safeGameMutate((game: any) => {
+      game.move(possibleMoves[randomIndex]);
+    });
+  }
+
+  function onDrop(sourceSquare: any, targetSquare: any) {
+    let move = null;
+    safeGameMutate((game: any) => {
+      move = game.move({
+        from: sourceSquare,
+        to: targetSquare,
+        promotion: "q",
+      });
+    });
+     // illegal move
+    if (move === null)
+      return false;
+    setTimeout(makeRandomMove, 200);
+    return true;
+  }
+
+  return <Chessboard position={game.fen()} onPieceDrop={onDrop} />;
 }
-console.log(chess.pgn())
 // END
 
 function App() {
-
-  const [nodeStatus, setNodeStatus] = useState<TNodeStatus>(null);
-
-  const getNodeStatusAsync = async () => {
-    try {
-      const nodeStatus: INodeStatus = await web3Client.publicApi().getNodeStatus();
-      setNodeStatus(nodeStatus);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  useEffect(() => {
-    getNodeStatusAsync();
-  }, []);
-
-  const getNodeOverview = (nodeStatus?: TNodeStatus): JSX.Element => {
-    if (!nodeStatus) {
-      return <React.Fragment>"Getting Massa's Node Status..."</React.Fragment>;
-    }
-    return (<React.Fragment>
-      Massa Net Version: {nodeStatus?.version}
-      <br />
-      Massa Net Node Id: {nodeStatus?.node_id}
-      <br />
-      Massa Net Node Ip: {nodeStatus?.node_ip}
-      <br />
-      Massa Net Time:    {nodeStatus?.current_time}
-      <br />
-      Massa Net Cycle: {nodeStatus?.current_cycle}
-      <br />
-    </React.Fragment>)
-  }
-
   return (
     <div className="App">
       <header className="App-header">
-        <img src={massa} className="App-logo" alt="logo" />
-        {getNodeOverview(nodeStatus)}
+        {PlayRandomMoveEngine()}
       </header>
     </div>
   );
