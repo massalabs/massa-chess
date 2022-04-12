@@ -11,7 +11,7 @@ const baseAccount = {
   address: "9mvJfA4761u1qT8QwSWcJ4gTDaFP5iSgjQzKMaqTbrWCFo1QM"
 } as IAccount;
 
-const chessSC: string = "YFYUXwVbshgYUoS85CNzjMT6wXuuEM4N9x9A26UUvyESG6Vx8";
+const chessSC: string = "24Tr7JwyDykNNErb8utKP7iWKv1XT34oBivFSnwb2eddeR9hbV";
 
 const providers: Array<IProvider> = [
   {
@@ -35,17 +35,20 @@ const web3Client: Client = new Client(web3ClientConfig, baseAccount);
 
 // START
 function ChessEngine() {
-  const boardState = web3Client.smartContracts().callSmartContract({
-    fee: 0,
-    maxGas: 1_000_000,
-    gasPrice: 0,
-    parallelCoins: 0,
-    sequentialCoins: 0,
-    targetAddress: chessSC,
-    functionName: "get_board_state",
-    parameter: "",
-  } as ICallData, baseAccount);
-  const [game, setGame] = useState(new Chess());
+  let [game, setGame] = useState(new Chess());
+  game.clear();
+  // const boardState = web3Client.smartContracts().callSmartContract({
+  //   fee: 0,
+  //   maxGas: 10_000_000,
+  //   gasPrice: 0,
+  //   parallelCoins: 0,
+  //   sequentialCoins: 0,
+  //   targetAddress: chessSC,
+  //   functionName: "get",
+  //   parameter: "data",
+  // } as ICallData, baseAccount).then((x: any) => { console.log("HELLO MY FRIEND"); console.log(x); game = new Chess(x); });
+  // note: set here the chess board
+  console.log("HEY")
 
   function safeGameMutate(modify: any) {
     setGame((g: any) => {
@@ -81,14 +84,14 @@ function ChessEngine() {
     setTimeout(makeRandomMove, 200);
     web3Client.smartContracts().callSmartContract({
       fee: 0,
-      maxGas: 1_000_000,
+      maxGas: 10_000_000,
       gasPrice: 0,
       parallelCoins: 0,
       sequentialCoins: 0,
       targetAddress: chessSC,
-      functionName: "set_board_state",
+      functionName: "set",
       parameter: game.fen(),
-    } as ICallData, baseAccount);
+    } as ICallData, baseAccount).then(console.log);
     return true;
   }
 
