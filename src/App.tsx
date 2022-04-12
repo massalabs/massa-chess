@@ -48,12 +48,11 @@ function GetBoard() {
 // START
 function ChessEngine() {
   console.log("START ENGINE")
-  GetBoard();
-  let [game, setGame] = useState(new Chess(board));
+  // note: use this
+  // GetBoard();
+  let [game, setGame] = useState(new Chess("rnbqkb1r/pppp1ppp/4p2n/8/8/4PP2/PPPP2PP/RNBQKBNR w KQkq - 1 3"));
   console.log("2");
   console.log(board);
-  // if (board == "")
-  //   return;
 
   function safeGameMutate(modify: any) {
     setGame((g: any) => {
@@ -83,10 +82,12 @@ function ChessEngine() {
         promotion: "q",
       });
     });
-    // illegal move
-    if (move === null)
+    if (move === null) {
+      console.log("ILLEGAL MOVE");
       return false;
-    setTimeout(makeRandomMove, 200);
+    }
+    makeRandomMove();
+    console.log(game.fen());
     web3Client.smartContracts().callSmartContract({
       fee: 0,
       maxGas: 10_000_000,
