@@ -10,7 +10,7 @@ export function main(name: string): void {
     const address = create_sc(bytes);
 
     // inform nodes of the creation
-    const message = "coin pool bidding is available at " + address;
+    const message = "chess is available at " + address;
     generate_event(message);
     print(message);
 }
