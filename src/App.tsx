@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import './App.css';
-import { IAccount, IProvider, ProviderType, Client, IClientConfig, ICallData, IAddressInfo } from "massa-web3";
+import { IAccount, IProvider, ProviderType, Client, IClientConfig, ICallData } from "massa-web3";
 import { Chess } from "chess.js";
 import { Chessboard } from "react-chessboard";
 
@@ -39,8 +39,6 @@ async function GetBoard() {
   return board.replace(/['"]+/g, '');
 }
 
-let initialized: boolean = false;
-
 function ChessEngine() {
   let [game, setGame] = useState(new Chess());
 
@@ -49,14 +47,15 @@ function ChessEngine() {
       let board: string = await GetBoard();
       console.log("from sc: " + board);
       game.load(board);
-      initialized = true;
     }
 
-    if (initialized == false) {
-      fetchData()
-        .catch(console.error);
-    }
-  });
+    fetchData()
+      .catch(console.error);
+  }, [refresh]);
+
+  function refresh() {
+    console.log("refreshing");
+  }
 
   function safeGameMutate(modify: any) {
     setGame((g) => {
@@ -103,7 +102,7 @@ function ChessEngine() {
     return true;
   }
 
-  return <Chessboard position={game.fen()} onPieceDrop={onDrop} />;
+  return <Chessboard position={game.fen()} onPieceDrop={onDrop} onSquareClick={refresh} />;
 }
 
 function App() {
