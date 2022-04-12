@@ -11,6 +11,8 @@ const baseAccount = {
   address: "9mvJfA4761u1qT8QwSWcJ4gTDaFP5iSgjQzKMaqTbrWCFo1QM"
 } as IAccount;
 
+const chessSC: string = "YFYUXwVbshgYUoS85CNzjMT6wXuuEM4N9x9A26UUvyESG6Vx8";
+
 const providers: Array<IProvider> = [
   {
     url: "http://127.0.0.1:33035",
@@ -39,7 +41,7 @@ function ChessEngine() {
     gasPrice: 0,
     parallelCoins: 0,
     sequentialCoins: 0,
-    targetAddress: "ADDRESS",
+    targetAddress: chessSC,
     functionName: "get_board_state",
     parameter: "",
   } as ICallData, baseAccount);
@@ -83,7 +85,7 @@ function ChessEngine() {
       gasPrice: 0,
       parallelCoins: 0,
       sequentialCoins: 0,
-      targetAddress: "ADDRESS",
+      targetAddress: chessSC,
       functionName: "set_board_state",
       parameter: game.fen(),
     } as ICallData, baseAccount);
@@ -97,7 +99,9 @@ function ChessEngine() {
 function App() {
   return (
     <div className="App">
+      <header className="App-header">
         {ChessEngine()}
+      </header>
     </div>
   );
 }
