@@ -44,16 +44,16 @@ function ChessEngine() {
   let [game, setGame] = useState(new Chess());
 
   // note: need to lock client while updating ledger
-  useEffect(() => {
-    const fetchData = async () => {
-      let board: string = await GetBoard();
-      console.log("from sc: " + board);
-      game.load(board);
-    }
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     let board: string = await GetBoard();
+  //     console.log("from sc: " + board);
+  //     game.load(board);
+  //   }
 
-    fetchData()
-      .catch(console.error);
-  }, []);
+  //   fetchData()
+  //     .catch(console.error);
+  // }, [poll]);
 
   function safeGameMutate(modify: any) {
     setGame((g) => {
@@ -74,6 +74,17 @@ function ChessEngine() {
   }
 
   function onDrop(sourceSquare: any, targetSquare: any) {
+    GetBoard().then((board: string) => { onDrop2(sourceSquare, targetSquare, board) })
+    return true;
+  }
+
+  function onDrop2(sourceSquare: any, targetSquare: any, board: string) {
+    if (game.fen() != board) {
+      // note: sometimes jumps to invalid move?
+      console.log("cannot play");
+      game.load(board);
+      return true;
+    }
     let move = null;
     safeGameMutate((game: any) => {
       move = game.move({
@@ -82,7 +93,10 @@ function ChessEngine() {
         promotion: "q",
       });
     });
-    if (move === null) return false;
+    if (move === null) {
+      console.log("invalid move");
+      return false;
+    }
     makeRandomMove();
     web3Client.smartContracts().callSmartContract({
       fee: 0,
@@ -97,7 +111,7 @@ function ChessEngine() {
     return true;
   }
 
-  return <Chessboard position={game.fen()} onPieceDrop={onDrop} />;
+  return <Chessboard position={game.fen()} onPieceDrop={onDrop}/>;
 }
 
 function App() {
