@@ -44,23 +44,21 @@ async function GetBoard() {
 
 // START
 function ChessEngine() {
-  const [game, setGame] = useState(new Chess());
+  let [game, setGame] = useState(new Chess());
 
-  // useEffect(() => {
-  //   // declare the data fetching function
-  //   const fetchData = async () => {
-  //     const data: string = await GetBoard();
-  //     console.log("BOARD");
-  //     console.log(data);
-  //     game.load(await GetBoard());
-  //     console.log("check: " + game.fen())
-  //   }
+  useEffect(() => {
+    // declare the data fetching function
+    const fetchData = async () => {
+      let data: string = await GetBoard();
+      data = data.replace(/['"]+/g, '');
+      game.load(data);
+    }
 
-  //   // call the function
-  //   fetchData()
-  //     // make sure to catch any error
-  //     .catch(console.error);
-  // }, []);
+    // call the function
+    fetchData()
+      // make sure to catch any error
+      .catch(console.error);
+  }, []);
 
   function safeGameMutate(modify: any) {
     setGame((g) => {
@@ -73,24 +71,14 @@ function ChessEngine() {
   function makeRandomMove() {
     const possibleMoves = game.moves();
     if (game.game_over() || game.in_draw() || possibleMoves.length === 0)
-      return; // exit if the game is over
+      return;
     const randomIndex = Math.floor(Math.random() * possibleMoves.length);
     safeGameMutate((game: any) => {
       game.move(possibleMoves[randomIndex]);
     });
   }
 
-  // start latest
   function onDrop(sourceSquare: any, targetSquare: any) {
-    GetBoard().then((x: string) => { onDrop2(sourceSquare, targetSquare, x)});
-    return true;
-  }
-  // end latest
-
-  function onDrop2(sourceSquare: any, targetSquare: any, data: string) {
-    console.log("DATA: " + data);
-    game.load(data.toString());
-    console.log("START FEN: " + game.fen());
     let move = null;
     safeGameMutate((game: any) => {
       move = game.move({
@@ -99,12 +87,10 @@ function ChessEngine() {
         promotion: "q",
       });
     });
-    if (move === null) return false; // illegal move
-    setTimeout(makeRandomMove, 200);
-    console.log("FINAL FEN: " + game.fen());
+    makeRandomMove();
     web3Client.smartContracts().callSmartContract({
       fee: 0,
-      maxGas: 10_000_000,
+      maxGas: 1_000_000,
       gasPrice: 0,
       parallelCoins: 0,
       sequentialCoins: 0,
