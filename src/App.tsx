@@ -6,7 +6,6 @@ import { Chessboard } from "react-chessboard";
 
 const chessSC: string = "2Dwo8HyxSophSgwA61f6Rfg6YUTTMXM3we91T5sPg2XqgnXcgq";
 
-// START
 const baseAccount = {
   publicKey: "5Jwx18K2JXacFoZcPmTWKFgdG1mSdkpBAUnwiyEqsVP9LKyNxR",
   privateKey: "2SPTTLK6Vgk5zmZEkokqC3wgpKgKpyV5Pu3uncEGawoGyd4yzC",
@@ -31,7 +30,6 @@ const web3ClientConfig = {
 } as IClientConfig;
 
 const web3Client: Client = new Client(web3ClientConfig, baseAccount);
-// END
 
 async function GetBoard() {
   let addr: any = await web3Client
@@ -42,21 +40,20 @@ async function GetBoard() {
   return board;
 }
 
-// START
+// Engine
 function ChessEngine() {
   let [game, setGame] = useState(new Chess());
 
+  // note: won't work on first iteration, needs a fix
+  // note: need to lock client while updating ledger
   useEffect(() => {
-    // declare the data fetching function
     const fetchData = async () => {
       let data: string = await GetBoard();
       data = data.replace(/['"]+/g, '');
       game.load(data);
     }
 
-    // call the function
     fetchData()
-      // make sure to catch any error
       .catch(console.error);
   }, []);
 
@@ -87,6 +84,7 @@ function ChessEngine() {
         promotion: "q",
       });
     });
+    if (move === null) return false;
     makeRandomMove();
     web3Client.smartContracts().callSmartContract({
       fee: 0,
@@ -103,7 +101,6 @@ function ChessEngine() {
 
   return <Chessboard position={game.fen()} onPieceDrop={onDrop} />;
 }
-// END
 
 function App() {
   return (
