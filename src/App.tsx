@@ -63,8 +63,10 @@ function ChessEngine() {
 
   function makeRandomMove() {
     const possibleMoves = game.moves();
-    if (game.game_over() || game.in_draw() || possibleMoves.length === 0)
+    if (game.game_over() || game.in_draw() || possibleMoves.length === 0) {
+      game.load("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
       return;
+    }
     const randomIndex = Math.floor(Math.random() * possibleMoves.length);
     safeGameMutate((game: any) => {
       game.move(possibleMoves[randomIndex]);
