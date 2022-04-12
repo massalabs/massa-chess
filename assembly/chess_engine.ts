@@ -1,10 +1,16 @@
 /** ***********************
- * Coin pool bidding smart contract
+ * Chess SC
  **/
 
-import { print, generate_event, get_balance, Context, Storage, transfer_coins, send_message, get_current_period, get_current_thread } from "massa-sc-std"
-import { JSON, parseNumber } from "json-as";
+import { Context, Storage } from "massa-sc-std"
 
-export function set(data: string): void {
-    
+export function set(fen: string): void {
+    const addresses = Context.get_call_stack();
+    const sc_address = addresses[addresses.length - 1]
+    // note: check if player is same here
+    Storage.set_data("fen_board_state", fen);
+}
+
+export function get(_: string): string {
+    return Storage.get_data("fen_board_state");
 }
