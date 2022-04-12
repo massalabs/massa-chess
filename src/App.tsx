@@ -36,21 +36,19 @@ async function GetBoard() {
     .publicApi()
     .getAddresses([chessSC]);
   let board: string = String.fromCharCode(...addr[0]['candidate_sce_ledger_info']['datastore']['2KDMgrjWrVvtv8RGy9dTxYBEGAFtuRLYUT5Qwto2Ro3gL8h8Nx']);
-  console.log("GetBoard = " + board);
-  return board;
+  return board.replace(/['"]+/g, '');
 }
 
 // Engine
 function ChessEngine() {
   let [game, setGame] = useState(new Chess());
 
-  // note: won't work on first iteration, needs a fix
   // note: need to lock client while updating ledger
   useEffect(() => {
     const fetchData = async () => {
-      let data: string = await GetBoard();
-      data = data.replace(/['"]+/g, '');
-      game.load(data);
+      let board: string = await GetBoard();
+      console.log("from sc: " + board);
+      game.load(board);
     }
 
     fetchData()

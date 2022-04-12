@@ -9,11 +9,11 @@ export function main(name: string): void {
     const bytes = include_base64('./build/chess_engine.wasm');
     const address = create_sc(bytes);
 
-    // init
-    call(address, "set", "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR", 100);
+    // initialize the board
+    call(address, "set", "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 100);
 
     // inform nodes of the creation
-    const message = "HERE: chess is available at " + address;
+    const message = "massa chess is available at " + address;
     generate_event(message);
     print(message);
 }
