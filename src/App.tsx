@@ -25,8 +25,8 @@ const providers: Array<IProvider> = [
 
 const web3ClientConfig = {
   providers,
-  retryStrategyOn: true,  // activate the backoff retry strategy
-  periodOffset: 3         // set an offset of a few periods (default = 5)
+  retryStrategyOn: true,
+  periodOffset: 3
 } as IClientConfig;
 
 const web3Client: Client = new Client(web3ClientConfig, baseAccount);
@@ -39,21 +39,24 @@ async function GetBoard() {
   return board.replace(/['"]+/g, '');
 }
 
-// Engine
+let initialized: boolean = false;
+
 function ChessEngine() {
   let [game, setGame] = useState(new Chess());
 
-  // note: need to lock client while updating ledger
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     let board: string = await GetBoard();
-  //     console.log("from sc: " + board);
-  //     game.load(board);
-  //   }
+  useEffect(() => {
+    const fetchData = async () => {
+      let board: string = await GetBoard();
+      console.log("from sc: " + board);
+      game.load(board);
+      initialized = true;
+    }
 
-  //   fetchData()
-  //     .catch(console.error);
-  // }, [poll]);
+    if (initialized == false) {
+      fetchData()
+        .catch(console.error);
+    }
+  });
 
   function safeGameMutate(modify: any) {
     setGame((g) => {
@@ -74,17 +77,6 @@ function ChessEngine() {
   }
 
   function onDrop(sourceSquare: any, targetSquare: any) {
-    GetBoard().then((board: string) => { onDrop2(sourceSquare, targetSquare, board) })
-    return true;
-  }
-
-  function onDrop2(sourceSquare: any, targetSquare: any, board: string) {
-    if (game.fen() != board) {
-      // note: sometimes jumps to invalid move?
-      console.log("cannot play");
-      game.load(board);
-      return true;
-    }
     let move = null;
     safeGameMutate((game: any) => {
       move = game.move({
@@ -111,7 +103,7 @@ function ChessEngine() {
     return true;
   }
 
-  return <Chessboard position={game.fen()} onPieceDrop={onDrop}/>;
+  return <Chessboard position={game.fen()} onPieceDrop={onDrop} />;
 }
 
 function App() {
