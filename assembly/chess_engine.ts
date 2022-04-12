@@ -9,5 +9,6 @@ export function set(fen: string): void {
     const sc_address = addresses[addresses.length - 1]
     print("NEW BOARD STATE: " + fen);
     // note: atleast check if player is the same
+    // note: have a default start state
     Storage.set_data("fen_board_state", fen);
 }

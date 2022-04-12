@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import './App.css';
-import { IAccount, IProvider, ProviderType, Client, IClientConfig, ICallData } from "massa-web3";
+import { IAccount, IProvider, ProviderType, Client, IClientConfig, ICallData, IAddressInfo } from "massa-web3";
 import { Chess } from "chess.js";
 import { Chessboard } from "react-chessboard";
+
+const chessSC: string = "2Dwo8HyxSophSgwA61f6Rfg6YUTTMXM3we91T5sPg2XqgnXcgq";
 
 // START
 const baseAccount = {
@@ -10,8 +12,6 @@ const baseAccount = {
   privateKey: "2SPTTLK6Vgk5zmZEkokqC3wgpKgKpyV5Pu3uncEGawoGyd4yzC",
   address: "9mvJfA4761u1qT8QwSWcJ4gTDaFP5iSgjQzKMaqTbrWCFo1QM"
 } as IAccount;
-
-const chessSC: string = "24Tr7JwyDykNNErb8utKP7iWKv1XT34oBivFSnwb2eddeR9hbV";
 
 const providers: Array<IProvider> = [
   {
@@ -33,22 +33,27 @@ const web3ClientConfig = {
 const web3Client: Client = new Client(web3ClientConfig, baseAccount);
 // END
 
+let board: string = "";
+
+function GetBoard() {
+  web3Client
+    .publicApi()
+    .getAddresses([chessSC]).then((x: any) => {
+      board = String.fromCharCode(...x[0]['candidate_sce_ledger_info']['datastore']['2KDMgrjWrVvtv8RGy9dTxYBEGAFtuRLYUT5Qwto2Ro3gL8h8Nx']);
+      console.log("1");
+      console.log(board);
+    });
+}
+
 // START
 function ChessEngine() {
-  let [game, setGame] = useState(new Chess());
-  game.clear();
-  // const boardState = web3Client.smartContracts().callSmartContract({
-  //   fee: 0,
-  //   maxGas: 10_000_000,
-  //   gasPrice: 0,
-  //   parallelCoins: 0,
-  //   sequentialCoins: 0,
-  //   targetAddress: chessSC,
-  //   functionName: "get",
-  //   parameter: "data",
-  // } as ICallData, baseAccount).then((x: any) => { console.log("HELLO MY FRIEND"); console.log(x); game = new Chess(x); });
-  // note: set here the chess board
-  console.log("HEY")
+  console.log("START ENGINE")
+  GetBoard();
+  let [game, setGame] = useState(new Chess(board));
+  console.log("2");
+  console.log(board);
+  // if (board == "")
+  //   return;
 
   function safeGameMutate(modify: any) {
     setGame((g: any) => {
