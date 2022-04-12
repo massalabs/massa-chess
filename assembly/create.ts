@@ -1,5 +1,5 @@
 /** ***********************
- * Create coin pool bidding smart contract
+ * Create smart contract
  **/
 
 import { print, generate_event, include_base64, create_sc } from "massa-sc-std"
