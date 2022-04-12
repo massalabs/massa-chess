@@ -33,23 +33,18 @@ const web3ClientConfig = {
 const web3Client: Client = new Client(web3ClientConfig, baseAccount);
 // END
 
-
 async function GetBoard() {
   let addr: any = await web3Client
     .publicApi()
     .getAddresses([chessSC]);
-  let board = String.fromCharCode(...addr[0]['candidate_sce_ledger_info']['datastore']['2KDMgrjWrVvtv8RGy9dTxYBEGAFtuRLYUT5Qwto2Ro3gL8h8Nx']);
+  let board: string = String.fromCharCode(...addr[0]['candidate_sce_ledger_info']['datastore']['2KDMgrjWrVvtv8RGy9dTxYBEGAFtuRLYUT5Qwto2Ro3gL8h8Nx']);
   console.log("GetBoard = " + board);
   return board;
 }
 
 // START
 function ChessEngine() {
-  console.log("1 ITER");
   const [game, setGame] = useState(new Chess());
-
-  GetBoard().then(game.load);
-  console.log("THEN: ", game.fen())
 
   // useEffect(() => {
   //   // declare the data fetching function
@@ -85,7 +80,17 @@ function ChessEngine() {
     });
   }
 
+  // start latest
   function onDrop(sourceSquare: any, targetSquare: any) {
+    GetBoard().then((x: string) => { onDrop2(sourceSquare, targetSquare, x)});
+    return true;
+  }
+  // end latest
+
+  function onDrop2(sourceSquare: any, targetSquare: any, data: string) {
+    console.log("DATA: " + data);
+    game.load(data.toString());
+    console.log("START FEN: " + game.fen());
     let move = null;
     safeGameMutate((game: any) => {
       move = game.move({
@@ -97,16 +102,16 @@ function ChessEngine() {
     if (move === null) return false; // illegal move
     setTimeout(makeRandomMove, 200);
     console.log("FINAL FEN: " + game.fen());
-    // web3Client.smartContracts().callSmartContract({
-    //   fee: 0,
-    //   maxGas: 10_000_000,
-    //   gasPrice: 0,
-    //   parallelCoins: 0,
-    //   sequentialCoins: 0,
-    //   targetAddress: chessSC,
-    //   functionName: "set",
-    //   parameter: game.fen(),
-    // } as ICallData, baseAccount).then(console.log);
+    web3Client.smartContracts().callSmartContract({
+      fee: 0,
+      maxGas: 10_000_000,
+      gasPrice: 0,
+      parallelCoins: 0,
+      sequentialCoins: 0,
+      targetAddress: chessSC,
+      functionName: "set",
+      parameter: game.fen(),
+    } as ICallData, baseAccount).then(console.log);
     return true;
   }
 
