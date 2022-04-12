@@ -51,11 +51,7 @@ function ChessEngine() {
 
     fetchData()
       .catch(console.error);
-  }, [refresh]);
-
-  function refresh() {
-    console.log("refreshing");
-  }
+  }, []);
 
   function safeGameMutate(modify: any) {
     setGame((g) => {
@@ -102,7 +98,7 @@ function ChessEngine() {
     return true;
   }
 
-  return <Chessboard position={game.fen()} onPieceDrop={onDrop} onSquareClick={refresh} />;
+  return <Chessboard position={game.fen()} onPieceDrop={onDrop} />;
 }
 
 function App() {
