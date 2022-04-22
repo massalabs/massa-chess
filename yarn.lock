@@ -6636,9 +6636,18 @@ makeerror@1.0.12:
   dependencies:
     tmpl "1.0.5"
 
-"massa-sc-std@https://github.com/massalabs/massa-sc-std":
-  version "3.0.0"
-  resolved "https://github.com/massalabs/massa-sc-std#1ace5a1e39134edbaa8400badb2b58e971352834"
+massa-sc-scripts@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/massa-sc-scripts/-/massa-sc-scripts-4.0.1.tgz#6fe705c25e140cdebaab50ea2a664259850589d0"
+  integrity sha512-bp1E7+CE91Gl/7l7men/S3LdUnIC/+O9Key3kArgsW1Qix89QD6NpVt/PBP8sLMvVVouEQId7ww06jEYdhLoVQ==
+  dependencies:
+    mscl-as-transformer "0.0.1"
+    yargs "^17.3.1"
+
+massa-sc-std@3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/massa-sc-std/-/massa-sc-std-3.1.2.tgz#c1c635454fc2d157f94b18c7f5f2ad358006cea0"
+  integrity sha512-fN0HaTV7bVEvQ16UWmLHCuYqTaItk1UWLUb37lvF+4R8L8WskZYwlZGl2sqb5gEuhvvYBmNGiG1cEJIOxMUpKA==
   dependencies:
     assemblyscript-json "^1.1.0"
 
@@ -6838,6 +6847,13 @@ ms@2.1.3, ms@^2.1.1:
   version "2.1.3"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.3.tgz#574c8138ce1d2b5861f0b44579dbadd60c6615b2"
   integrity sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==
+
+mscl-as-transformer@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/mscl-as-transformer/-/mscl-as-transformer-0.0.1.tgz#42552daefe8d27d3fcda9612c063c78008128226"
+  integrity sha512-jLgcbKN1k013NyUGAQmczS905ET2I1TRXfPv2ID/atIc13pGBKNOBBdGloEkOiBZ0aMHgPHnFcMDNJIrC3RX+Q==
+  dependencies:
+    visitor-as "^0.8.0"
 
 multicast-dns@^7.2.4:
   version "7.2.4"
@@ -9081,7 +9097,7 @@ string-range@~1.2, string-range@~1.2.1:
   resolved "https://registry.yarnpkg.com/string-range/-/string-range-1.2.2.tgz#a893ed347e72299bc83befbbf2a692a8d239d5dd"
   integrity sha1-qJPtNH5yKZvIO++78qaSqNI51d0=
 
-string-width@^4.1.0, string-width@^4.2.0:
+string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.3:
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
   integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
@@ -9743,6 +9759,14 @@ visitor-as@^0.6.0:
     lodash.clonedeep "^4.5.0"
     ts-mixer "^5.4.1"
 
+visitor-as@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/visitor-as/-/visitor-as-0.8.0.tgz#5451ce2bb25f4c787d7f74857b4c839e48a157ee"
+  integrity sha512-tW9Vfr2AnGCckcfujL7QPbfrY7D0hNcYwi5DWx8wBfBjgCWhfIXEEojqS5JrzRnQI+LllTEUfGAIdLaxaaBNpw==
+  dependencies:
+    lodash.clonedeep "^4.5.0"
+    ts-mixer "^5.4.1"
+
 w3c-hr-time@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/w3c-hr-time/-/w3c-hr-time-1.0.2.tgz#0a89cdf5cc15822df9c360543676963e0cc308cd"
@@ -10296,6 +10320,11 @@ yargs-parser@^20.2.2:
   resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-20.2.9.tgz#2eb7dc3b0289718fc295f362753845c41a0c94ee"
   integrity sha512-y11nGElTIV+CT3Zv9t7VKl+Q3hTQoT9a1Qzezhhl6Rp21gJ/IVTW7Z3y9EWXhuUBC2Shnf+DX0antecpAwSP8w==
 
+yargs-parser@^21.0.0:
+  version "21.0.1"
+  resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-21.0.1.tgz#0267f286c877a4f0f728fceb6f8a3e4cb95c6e35"
+  integrity sha512-9BK1jFpLzJROCI5TzwZL/TU4gqjK5xiHV/RfWLOahrjAko/e4DJkRDZQXfvqAsiZzzYhgAzbgz6lg48jcm4GLg==
+
 yargs@^16.2.0:
   version "16.2.0"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-16.2.0.tgz#1c82bf0f6b6a66eafce7ef30e376f49a12477f66"
@@ -10308,6 +10337,19 @@ yargs@^16.2.0:
     string-width "^4.2.0"
     y18n "^5.0.5"
     yargs-parser "^20.2.2"
+
+yargs@^17.3.1:
+  version "17.4.1"
+  resolved "https://registry.yarnpkg.com/yargs/-/yargs-17.4.1.tgz#ebe23284207bb75cee7c408c33e722bfb27b5284"
+  integrity sha512-WSZD9jgobAg3ZKuCQZSa3g9QOJeCCqLoLAykiWgmXnDo9EPnn4RPf5qVTtzgOx66o6/oqhcA5tHtJXpG8pMt3g==
+  dependencies:
+    cliui "^7.0.2"
+    escalade "^3.1.1"
+    get-caller-file "^2.0.5"
+    require-directory "^2.1.1"
+    string-width "^4.2.3"
+    y18n "^5.0.5"
+    yargs-parser "^21.0.0"
 
 yocto-queue@^0.1.0:
   version "0.1.0"

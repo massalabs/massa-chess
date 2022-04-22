@@ -37,8 +37,9 @@
     "https-browserify": "^1.0.0",
     "json-as": "^0.2.6",
     "madge": "^5.0.1",
-    "massa-sc-std": "https://github.com/massalabs/massa-sc-std",
+    "massa-sc-std": "3.1.2",
     "massa-web3": "^1.6.0",
+    "massa-sc-scripts": "^4.0.1",
     "os-browserify": "^0.3.0",
     "path": "^0.12.7",
     "process": "^0.11.10",
@@ -71,8 +72,7 @@
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "fix-lint": "tslint -c tslint.json '**/*.ts' --fix",
-    "build_sc": "asc assembly/chess_engine.ts --target release --exportRuntime --binaryFile build/chess_engine.wasm",
-    "bundle_sc": "npm run build_sc && node tools/include_base64.js assembly/create.ts && asc assembly/create.m.ts --target release --exportRuntime --binaryFile build/create.wasm && rm assembly/create.m.ts"
+    "build_sc": "massa-sc-scripts build-sc assembly/chess.ts && massa-sc-scripts build-sc assembly/deploy.ts"
   },
   "eslintConfig": {
     "extends": [
@@ -82,9 +82,11 @@
   },
   "browserslist": {
     "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
+      "chrome >= 67",
+      "edge >= 79",
+      "firefox >= 68",
+      "opera >= 54",
+      "safari >= 14"
     ],
     "development": [
       "last 1 chrome version",

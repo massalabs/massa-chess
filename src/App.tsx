@@ -14,11 +14,11 @@ const baseAccount = {
 
 const providers: Array<IProvider> = [
   {
-    url: "http://127.0.0.1:33035",
+    url: "http://51.75.131.129:33035",
     type: ProviderType.PUBLIC
   } as IProvider,
   {
-    url: "http://127.0.0.1:33034",
+    url: "http://51.75.131.129:33034",
     type: ProviderType.PRIVATE
   } as IProvider
 ];
@@ -35,7 +35,7 @@ async function GetBoard() {
   let addr: any = await web3Client
     .publicApi()
     .getAddresses([chessSC]);
-  let board: string = String.fromCharCode(...addr[0]['candidate_sce_ledger_info']['datastore']['2KDMgrjWrVvtv8RGy9dTxYBEGAFtuRLYUT5Qwto2Ro3gL8h8Nx']);
+  let board: string = String.fromCharCode(...addr[0]['candidate_sce_ledger_info']['datastore']['2KziQHMiHmmU3juWPvCYQr1hV3ns8NkXaV3WKH6wV3jycD7SVE']);
   return board.replace(/['"]+/g, '');
 }
 
